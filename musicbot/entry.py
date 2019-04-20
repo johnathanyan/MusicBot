@@ -7,8 +7,8 @@ import sys
 
 from enum import Enum
 from .constructs import Serializable
-from .exceptions import ExtractionError
-from .utils import get_header, md5sum
+from .exceptions import ExtractionError, HelpfulError
+from .utils import get_header, md5sum, folder_size, remove_oldest_file
 
 log = logging.getLogger(__name__)
 
@@ -307,6 +307,18 @@ class URLPlaylistEntry(BasePlaylistEntry):
             # What the fuck do I do now?
 
         self.filename = unhashed_fname = self.playlist.downloader.ytdl.prepare_filename(result)
+
+        if self.playlist.bot.config.storage_limit is not None:
+            while float(self.playlist.bot.config.storage_limit) < folder_size(self.download_folder) + float(os.path.getsize(self.filename)):
+                if float(os.path.getsize(self.filename)) >= float(self.playlist.bot.config.storage_limit) and len(os.listdir(self.download_folder)) == 1:
+                    log.info( 
+                        "Song is larger than audio cache limit. " 
+                        "Deleting the song after it plays. "
+                        "Refer to StorageLimit in options.ini.")
+                    break
+                log.info("Audio cache at over capacity. Deleting oldest song.")
+                removed_file = remove_oldest_file(self.download_folder)
+                log.info("Removed " + removed_file)
 
         if hash:
             # insert the 8 last characters of the file hash to the file name to ensure uniqueness
