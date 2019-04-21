@@ -157,14 +157,17 @@ def folder_size(dir):
             total_size += os.path.getsize(fp)
     return total_size
 
-def remove_oldest_file(dir):
+def remove_oldest_file(dir, restricted_set):
     list_of_files = os.listdir(dir)
-    full_path = [(dir + "/{0}").format(x) for x in list_of_files]
+    full_path = [(dir + "/{0}").format(x) for x in list_of_files if x not in restricted_set]
 
-    if len([name for name in list_of_files]) >= 1:
+    log.info(full_path)
+    if len(full_path) >= 1:
         oldest_file = min(full_path, key=os.path.getctime)
         os.remove(oldest_file)
         return oldest_file
+    else:
+        return None
 
 def _func_():
     # emulate __func__ from C++
