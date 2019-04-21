@@ -161,7 +161,6 @@ def remove_oldest_file(dir, restricted_set):
     list_of_files = os.listdir(dir)
     full_path = [(dir + "/{0}").format(x) for x in list_of_files if x not in restricted_set]
 
-    log.info(full_path)
     if len(full_path) >= 1:
         oldest_file = min(full_path, key=os.path.getctime)
         os.remove(oldest_file)

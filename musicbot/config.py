@@ -51,7 +51,7 @@ class Config:
         self.default_volume = config.getfloat('MusicBot', 'DefaultVolume', fallback=ConfigDefaults.default_volume)
         self.skips_required = config.getint('MusicBot', 'SkipsRequired', fallback=ConfigDefaults.skips_required)
         self.skip_ratio_required = config.getfloat('MusicBot', 'SkipRatio', fallback=ConfigDefaults.skip_ratio_required)
-        self.storage_limit = config.getfloat('MusicBot', 'StorageLimit', fallback=ConfigDefaults.storage_limit)
+        self.storage_limit = config.get('MusicBot', 'StorageLimit', fallback=ConfigDefaults.storage_limit)
         self.save_videos = config.getboolean('MusicBot', 'SaveVideos', fallback=ConfigDefaults.save_videos)
         self.now_playing_mentions = config.getboolean('MusicBot', 'NowPlayingMentions', fallback=ConfigDefaults.now_playing_mentions)
         self.auto_summon = config.getboolean('MusicBot', 'AutoSummon', fallback=ConfigDefaults.auto_summon)
@@ -321,6 +321,7 @@ class ConfigDefaults:
     default_volume = 0.15
     skips_required = 4
     skip_ratio_required = 0.5
+    storage_limit = None
     save_videos = True
     now_playing_mentions = False
     auto_summon = True
@@ -342,7 +343,6 @@ class ConfigDefaults:
     legacy_skip = False
     leavenonowners = False
     usealias = True
-    storage_limit = None
 
     options_file = 'config/options.ini'
     blacklist_file = 'config/blacklist.txt'

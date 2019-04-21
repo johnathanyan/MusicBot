@@ -310,7 +310,7 @@ class URLPlaylistEntry(BasePlaylistEntry):
         self.filename = unhashed_fname = self.playlist.downloader.ytdl.prepare_filename(result)
 
 
-        if self.playlist.bot.config.storage_limit is not None:
+        if self.playlist.bot.config.storage_limit:
             capacity_exceeded = float(self.playlist.bot.config.storage_limit) < folder_size(self.download_folder) + float(os.path.getsize(self.filename))
             # ensure we aren't deleting songs on the queue
             songs_on_queue = set()
